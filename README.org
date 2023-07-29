@@ -1,0 +1,54 @@
+#+OPTIONS: toc:nil
+* Nix DeckTape (+ org-reveal extras)
+
+This repository offers a flake containing the [[https://github.com/astefanutti/decktape][DeckTape]] utility, useful
+for exporting various HTML presentation formats to PDF.
+
+One might find the utility useful in closing the gap providing an easy
+way to generate PDF slides from an [[https://github.com/yjwen/org-reveal/][org-reveal]] presentation when
+required, for distribution after a talk or otherwise.
+
+** Using the flake
+
+This flake allows an easy way to run the tool on NixOS or via the Nix
+package manager (with flakes enabled).
+
+*** Without installation
+
+#+begin_src shell
+  nix run github:jnclark/decktape-nix#decktape -- version
+#+end_src
+
+*** Adding to NixOS configuration
+
+If in a flake based configuration, one can add the repository to your
+inputs via
+
+#+begin_src nix
+  decktape-nix = {
+    url = "github:jnclark/decktape-nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+#+end_src
+
+and add the flake's default overlay to your ~nixpkgs~ (or a project
+flake, or anywhere overlays may be applied).
+
+#+begin_src nix
+  nixpkgs.overlays = [ decktape-nix.overlays.default ];
+#+end_src
+
+** Details for the interested
+
+Rather than utilizing the [[https://github.com/puppeteer/puppeteer][Puppeteer]] obtained version of Chrome, this
+flake skips the download and uses ~nixpkgs~ ~ungoogled-chromium~ via
+~decktape~'s ~--chrome-path~ option.
+
+** Extras
+
+- Includes a small bundle of utility scripts, ~org-reveal-utils~,
+  within the overlay with two commands to return the Nix store path of
+  the [[https://github.com/hakimel/reveal.js][reveal.js]] source (~revealjs-source-store-path~) and [[https://www.mathjax.org/][MathJax]]
+  source (~mathjax-store-path~) usable in setting the
+  ~org-reveal-root~ and ~org-reveal-mathjax-url~ variables
+  respectively within one's [[https://www.gnu.org/software/emacs/][GNU Emacs]] configuration for org/ox-reveal.
