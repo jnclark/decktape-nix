@@ -115,6 +115,10 @@
           nixpkgs.overlays = [ self.overlays.default ];
           environment.systemPackages = [ pkgs.decktape pkgs.org-reveal-utils ];
         };
+      hydraJobs = {
+        packages = self.packages;
+        checks = self.checks;
+      };
       formatter = forAllSystems (system:
         (import nixpkgs { inherit system; }).nixpkgs-fmt);
     };
