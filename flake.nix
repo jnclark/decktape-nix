@@ -93,10 +93,10 @@
             inherit system;
           };
           makeTest {
-            name = "run-decktape-${system}";
+            name = "run-decktape-nix-${system}";
             nodes = {
               client = { ... }: {
-                imports = [ self.nixosModules.decktape ];
+                imports = [ self.nixosModules.decktape-nix ];
                 nixpkgs.overlays = [ self.overlays.default ];
               };
             };
@@ -104,14 +104,16 @@
               start_all()
               client.wait_for_unit("multi-user.target")
               client.succeed("decktape version")
+              client.succeed("revealjs-source-store-path")
+              client.succeed("mathjax-store-path")
             '';
           };
       });
-      nixosModules.decktape =
+      nixosModules.decktape-nix =
         { pkgs, ... }:
         {
           nixpkgs.overlays = [ self.overlays.default ];
-          environment.systemPackages = [ pkgs.decktape ];
+          environment.systemPackages = [ pkgs.decktape pkgs.org-reveal-utils ];
         };
       formatter = forAllSystems (system:
         (import nixpkgs { inherit system; }).nixpkgs-fmt);
