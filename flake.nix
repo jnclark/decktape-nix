@@ -23,7 +23,7 @@
         decktape = prev.buildNpmPackage {
           name = "decktape";
           src = decktape-src;
-          npmDepsHash = "sha256-MIMAPCrwaSMa6O8kvS0W4fgPo9lTajzUG2DoOXvgoqM=";
+          npmDepsHash = "sha256-lsHLKvnlIdi2EZWzNCK6oqL8wRyiwkK9SdF4H3TO87k=";
           npmPackFlags = [ "--ignore-scripts" ];
           postPatch = ''
             # Substitute in npm-shrinkwrap for package-lock
