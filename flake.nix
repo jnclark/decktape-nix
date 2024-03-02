@@ -2,7 +2,7 @@
   description = "A Nix Flake for DeckTape (+ extras)";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-23.05;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-23.11;
     decktape-src = {
       url = github:astefanutti/decktape;
       flake = false;
@@ -23,7 +23,7 @@
         decktape = prev.buildNpmPackage {
           name = "decktape";
           src = decktape-src;
-          npmDepsHash = "sha256-lsHLKvnlIdi2EZWzNCK6oqL8wRyiwkK9SdF4H3TO87k=";
+          npmDepsHash = "sha256-dZAt/ffLy+qzG3gVk+nGujFnx+G2yeGMEmrhRm1JoUs=";
           npmPackFlags = [ "--ignore-scripts" ];
           postPatch = ''
             # Substitute in npm-shrinkwrap for package-lock
