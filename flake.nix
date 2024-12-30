@@ -2,32 +2,35 @@
   description = "A Nix Flake for DeckTape (+ extras)";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-23.11;
-    decktape-src = {
-      url = github:astefanutti/decktape;
-      flake = false;
-    };
-    revealjs-src = {
-      url = github:hakimel/reveal.js;
-      flake = false;
-    };
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-24.11;
   };
 
-  outputs = { self, nixpkgs, decktape-src, revealjs-src, ... }:
+  outputs = { self, nixpkgs, ... }:
     let
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
       systems = [ "x86_64-linux" "aarch64-linux" ];
+      decktapeVersion = "3.14.0";
+      revealjs-src = nixpkgs.legacyPackages.x86_64-linux.fetchFromGitHub {
+        owner = "hakimel";
+        repo = "reveal.js";
+        rev = "5.1.0";
+        sha256 = "sha256-L6KVBw20K67lHT07Ws+ZC2DwdURahqyuyjAaK0kTgN0=";
+      };
     in
     {
       overlays.default = final: prev: {
         decktape = prev.buildNpmPackage {
-          name = "decktape";
-          src = decktape-src;
-          npmDepsHash = "sha256-dZAt/ffLy+qzG3gVk+nGujFnx+G2yeGMEmrhRm1JoUs=";
+          pname = "decktape";
+          version = decktapeVersion;
+          src = prev.fetchFromGitHub {
+            owner = "astefanutti";
+            repo = "decktape";
+            rev = "v${decktapeVersion}";
+            sha256 = "sha256-V7JoYtwP7iQYFi/WhFpkELs7mNKF6CqrMyjWhxLkcTA=";
+          };
+          npmDepsHash = "sha256-rahrIhB0GhqvzN2Vu6137Cywr19aQ70gVbNSSYzFD+s=";
           npmPackFlags = [ "--ignore-scripts" ];
           postPatch = ''
-            # Substitute in npm-shrinkwrap for package-lock
-            cp npm-shrinkwrap.json package-lock.json
             # Skip download of Chrome, as we will wrap in our own
             export PUPPETEER_SKIP_DOWNLOAD=1
           '';
@@ -52,7 +55,7 @@
           name = "revealjs-source-store-path";
           runtimeInputs = [ ];
           text = ''
-            printf ${self.inputs.revealjs-src}
+            printf ${revealjs-src}
           '';
         };
         mathjax-path-util = prev.writeShellApplication {
@@ -77,14 +80,6 @@
         decktape = (import nixpkgs { inherit system; overlays = [ self.overlays.default ]; }).decktape;
         org-reveal-utils = (import nixpkgs { inherit system; overlays = [ self.overlays.default ]; }).org-reveal-utils;
         default = self.packages.${system}.decktape;
-      });
-      apps = forAllSystems (system: {
-        decktape = {
-          type = "app";
-          name = "decktape";
-          program = "${self.packages.${system}.decktape}/bin/decktape";
-        };
-        default = self.apps.${system}.decktape;
       });
       checks = forAllSystems (system: {
         build = self.packages.${system}.default;

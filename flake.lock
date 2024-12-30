@@ -1,58 +1,24 @@
 {
   "nodes": {
-    "decktape-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1709393828,
-        "narHash": "sha256-6O+28tWWNRqEe/Jczt8wZ5Gc7WOfcQm2X7jzgaLxzDU=",
-        "owner": "astefanutti",
-        "repo": "decktape",
-        "rev": "6735cec96dad6b32ee43d04f858b9794081cb866",
-        "type": "github"
-      },
-      "original": {
-        "owner": "astefanutti",
-        "repo": "decktape",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1709309926,
-        "narHash": "sha256-VZFBtXGVD9LWTecGi6eXrE0hJ/mVB3zGUlHImUs2Qak=",
+        "lastModified": 1735264675,
+        "narHash": "sha256-MgdXpeX2GuJbtlBrH9EdsUeWl/yXEubyvxM1G+yO4Ak=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "79baff8812a0d68e24a836df0a364c678089e2c7",
+        "rev": "d49da4c08359e3c39c4e27c74ac7ac9b70085966",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-23.11",
+        "ref": "nixos-24.11",
         "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "revealjs-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1709114936,
-        "narHash": "sha256-dZDRmOAlCAKRrQtlf5p5DqMK+LciMIBVkSugcRvObUY=",
-        "owner": "hakimel",
-        "repo": "reveal.js",
-        "rev": "2927be34d83bc0f0552867092272390ae951a715",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hakimel",
-        "repo": "reveal.js",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
-        "decktape-src": "decktape-src",
-        "nixpkgs": "nixpkgs",
-        "revealjs-src": "revealjs-src"
+        "nixpkgs": "nixpkgs"
       }
     }
   },
